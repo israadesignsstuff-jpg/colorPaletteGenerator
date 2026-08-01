@@ -1,6 +1,7 @@
 const generateBtn = document.getElementById("generate-btn");
 const paletteContainer = document.querySelector(".palette-container");
-const copyBtn = document.querySelector(".copy-btn")
+
+
 generateBtn.addEventListener("click", generatePalette);
 
 paletteContainer.addEventListener("click", function(e) {
@@ -8,13 +9,28 @@ paletteContainer.addEventListener("click", function(e) {
         const hexValue = e.target.previousElementSibling.textContent
 
         navigator.clipboard.writeText(hexValue)
-        .then(() => showCopySuccess())
+        .then(() => showCopySuccess(e.target))
         .catch((err) => console.log(err))
+    } else if(e.target.classList.contains("color")) {
+        const hexValue = e.target.nextElementSibling.querySelector(".hex-value").textContent;
+                navigator.clipboard
+        .writeText(hexValue)
+        .then(() => showCopySuccess(e.target.nextElementSibling.querySelector(".copy-btn")))
+        .catch((err) => console.log(err));
     }
-})
+});
 
-function showCopySuccess() {
+function showCopySuccess(element) {
+   element.classList.remove("far", "fa-copy");
+   element.classList.add("fas", "fa-check");
 
+   element.style.color ="#48bb78";
+
+   setTimeout(() => {
+    element.classList.remove("fas", "fa-check");
+    element.classList.add("far", "fa-copy");
+    element.style.color = "";
+   }, 1500 )
 }
 
 function generatePalette() {
